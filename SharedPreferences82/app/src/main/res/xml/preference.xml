@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:key="OPTION_KEY"
+        android:title="Enable"
+        android:summary="Enable more options"
+        android:defaultValue="false"/>
+
+    <ListPreference
+        android:key="LIST_KEY"
+        android:entries="@style/Preference"
+        android:entryValues="@style/Preference"
+        android:summary="Light"
+        android:title="List options"/>
+
+    <DropDownPreference
+        android:key="DAUGHTER_LIST_KEY"
+        android:entries="@style/Preference"
+        android:entryValues="@style/Preference"
+        android:summary="Dark"
+        android:title="Other list"/>
+
+    <PreferenceScreen
+        android:dependency="OPTION_KEY"
+        android:key="screen"
+        android:summary="Description of screen"
+        android:title="Screen">
+
+        <CheckBoxPreference
+            android:key="SECRET_OPTION"
+            android:summary="It`s secret option"
+            android:title="PUSH THIS!"/>
+
+    </PreferenceScreen>
+
+</PreferenceScreen>
