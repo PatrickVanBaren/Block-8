@@ -13,12 +13,14 @@ import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new CopyTask().execute();
+                new PutFromPublicStorageTask().execute();
             }
         };
 
@@ -62,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
             try {
                 final OutputStream outputStream = new BufferedOutputStream(openFileOutput(
                         "image.jpg", Context.MODE_PRIVATE));
-                final InputStream inputStream = new BufferedInputStream(getAssets()
-                        .open("image.jpg"));
+                final InputStream inputStream = new BufferedInputStream(getResources()
+                        .openRawResource(R.raw.image));
                 final byte[] buffer = new byte[1024];
                 int length;
                 while ((length = inputStream.read(buffer)) > 0) {
@@ -83,19 +86,40 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    protected class PutFromPublicStorageTask extends AsyncTask <Void, Void, Bitmap> {
+
+        @Override
+        protected Bitmap doInBackground(Void... voids) {
+            try {
+                final InputStream inputStream = new BufferedInputStream(openFileInput("image.jpg"));
+                return BitmapFactory.decodeStream(inputStream);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
     private class LoadFromPrivateStorageTask extends AsyncTask<Void, Void, Bitmap> {
 
         @Override
         protected Bitmap doInBackground(Void... voids) {
             try {
-                final File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                final File file = new File(dir, "image.jpg");
+                final File file = new File(Environment.getExternalStorageState(), "image.jpg");
                 final InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
                 return BitmapFactory.decodeStream(inputStream);
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+            if(bitmap != null) {
+                image.setImageBitmap(bitmap);
+            }
         }
     }
 }

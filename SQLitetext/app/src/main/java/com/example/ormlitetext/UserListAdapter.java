@@ -20,12 +20,11 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     }
 
     public void setCursor(Cursor cursor) {
-        final Cursor oldCursor = cursor;
+        if (this.cursor != null) {
+            this.cursor.close();
+        }
         this.cursor = cursor;
         notifyDataSetChanged();
-        if (oldCursor != null) {
-            oldCursor.close();
-        }
     }
 
     @NonNull

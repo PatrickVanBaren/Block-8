@@ -107,8 +107,7 @@ public class MainActivity extends AppCompatActivity {
         protected List<Users> doInBackground(Void... voids) {
             try {
                 final Dao<Users, Long> dao = mHelper.getDao(Users.class);
-                dao.queryForAll();
-                return null;
+                return dao.queryForAll();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -116,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<Users> users) {
+            super.onPostExecute(users);
             mAdapter.setData(users);
         }
     }

@@ -7,13 +7,6 @@
         android:summary="Enable more options"
         android:defaultValue="false"/>
 
-    <ListPreference
-        android:key="LIST_KEY"
-        android:entries="@style/Preference"
-        android:entryValues="@style/Preference"
-        android:summary="Light"
-        android:title="List options"/>
-
     <DropDownPreference
         android:key="DAUGHTER_LIST_KEY"
         android:entries="@style/Preference"
